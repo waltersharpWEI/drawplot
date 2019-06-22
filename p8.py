@@ -48,16 +48,16 @@ def processData(df):
   df['seed']=df['seed'].astype('int32')
   return df.groupby('sigma').mean()
 
-def drawFig(df):
+def drawFig(df,yx):
   # Data for plotting
   t = df.index
-  s = df['time']
+  s = df[yx]
   
   fig, ax = plt.subplots()
   ax.plot(t, s)
   
   ax.set(xlabel='sigma (images)', ylabel='second (s)',
-         title='sigma time curve')
+         title='sigma' + yx + 'curve')
   ax.grid()
   
   fig.savefig("test.png")
@@ -66,5 +66,6 @@ def drawFig(df):
 df=parseData(sys.argv[1])
 df=processData(df)
 print(df)
-drawFig(df)
+drawFig(df,'time')
+drawFig(df,'iter')
 
