@@ -57,13 +57,14 @@ def drawFig(df,yx):
   ax.plot(t, s)
   
   ax.set(xlabel='sigma (images)', ylabel='second (s)',
-         title='sigma' + yx + 'curve')
+         title='sigma ' + yx + ' curve')
   ax.grid()
   
   fig.savefig("test.png")
   plt.show()
   
 df=parseData(sys.argv[1])
+print(df)
 df=processData(df)
 print(df)
 drawFig(df,'time')

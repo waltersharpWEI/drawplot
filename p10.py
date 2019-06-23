@@ -55,32 +55,28 @@ def processData(df):
 
 def drawFig(df,yx):
   # Data for plotting
-  df1 = df[df['target_accuracy'] == 0.40]
-  df2 = df[df['target_accuracy'] == 0.45]
-  print(df1)
-  print(df2)
-
-  df1 = df1.groupby('sigma').mean()
-  df2 = df2.groupby('sigma').mean()
-
-  t1 = df1.index
-  t1 = np.log2(t1)
-  s1 = df1[yx]
-  
-  t2 = df2.index
-  t2 = np.log2(t2)
-  s2 = df2[yx]
-  
   fig, ax = plt.subplots()
-  l1, = ax.plot(t1, s1)
-  l2, = ax.plot(t2, s2)
-  le1 = ax.legend([l2, l1], ["target accuracy 0.45", "target accuracy 0.40"], loc='upper right')
+  ls = []
+  lab = []
+  for name,group in df.groupby('target_accuracy'):
+    print(group)
+    df = group.groupby('sigma').mean()
+    t = np.log2(df.index)
+    s = df[yx]
+    l, = ax.plot(t, s, marker='o')
+    # to annotate
+    #for ts in zip(t, s):
+    #  ax.annotate("(%s,%s)" % ts, xy=ts, xytext=(-20, 10), textcoords='offset points')
+    ls = np.append(ls,l,)
+    lab = np.append(lab,name)    
+
+  le1 = ax.legend(ls, lab , loc='upper right')
   
   ax.set(xlabel='log2(sigma)', ylabel='second (s)',
          title='sigma ' + yx + ' curve')
   ax.grid()
   plt.gca().add_artist(le1)
-  
+ 
   fig.savefig("test.png")
   plt.show()
   
